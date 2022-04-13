@@ -1,39 +1,22 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, FlatList, SafeAreaView} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StyleSheet, Text, View,TouchableOpacity, FlatList} from 'react-native';
+import  ListScreen  from './src/screens/ListScreen';
+import  FormScreen  from './src/screens/FormScreen';
 
-const userData = [
-  { id:1, name : 'John', gender : 'male', age : 20 },
-  { id:2, name : 'Jenny', gender : 'female', age : 25 },
-  { id:4, name : 'Bob', gender : 'male', age : 22 },
-  { id:5, name : 'Henry', gender : 'male', age : 21 },
-  { id:6, name : 'Ruby', gender : 'female', age : 32 },
-  { id:7, name : 'Sofia', gender : 'female', age : 27 },
-  { id:8, name : 'David', gender : 'male', age : 20 },
-  { id:9, name : 'Alice', gender : 'female', age : 19 },
-  { id:10, name : 'James', gender : 'male', age : 25  }
-];
+const Stack = createNativeStackNavigator();
 
 export default function App() {
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>User List</Text>
-     <FlatList 
-        showsVerticalScrollIndicator={false}
-        keyExtractor={userData => userData.name}
-        data={userData} 
-        renderItem={ ( {item} ) => {
-          return (
-            <View style={styles.item}>                
-                      <Text style={{}}>Name : {item.name}</Text>
-                      <Text style={{}}>Gender : {item.gender}</Text>
-                      <Text style={{}}>Age : {item.age}</Text>
-            </View>
-          )
-          } }
-      />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName='List'>
+        <Stack.Screen name='List' component={ListScreen}/>
+        <Stack.Screen name='Form' component={FormScreen}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -44,19 +27,5 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
     marginTop:20
-  },
-  item:{
-    borderWidth:2,
-    borderColor:'grey',
-    margin:5,
-    backgroundColor:'#d5d5d5',
-    padding:10,
-    borderRadius:2
-  },
-  heading:{
-    fontSize:20,
-    marginLeft:20,
-    marginBottom:10
-    
   }
 });
