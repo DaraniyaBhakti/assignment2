@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
 import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
 import RadioGroup from 'react-native-radio-buttons-group';
 import Checkbox from 'expo-checkbox';
@@ -10,19 +10,52 @@ const radioButtonData = [
     { id:1, label:"Male", value:"Male"},
     { id:2, label:"Female", value:"Female"}
 ]
+
 const FormScreen = () =>{
+    
     const [name, setName] = useState("")
     const [age, setAge] = useState("")
     const [radioButton, setRadioButton] = useState(radioButtonData)
     const [englishCheckBox , setEnglish] = useState(false)
     const [gujaratiCheckBox , setGujarati] = useState(false)
     const [hindiCheckBox , setHindi] = useState(false)
-    const [birthDate, setBirthDate] = useState()
+    const [birthDate, setBirthDate] = useState("")
 
     function onPressRadioButton(radioButtonArray){
         setRadioButton(radioButtonArray);
         
     }
+    function onButtonCLick(){
+        let isValid = true;
+        if(!name.trim()){
+            alert("Enter name")
+            isValid = false;
+            return;
+        }
+        if(!age.trim()){
+            
+            alert("Enter age")
+            isValid = false;
+            return;
+        }
+        if(!birthDate.trim()){
+            alert("Select birthdate")
+            isValid = false;
+            return;
+        }
+        if(!englishCheckBox){
+            if(!hindiCheckBox){
+                if(!gujaratiCheckBox){
+                    alert("Select language")
+                    isValid = false;
+                    return;
+                }
+            }
+        }
+        if(isValid){
+            alert("Succes");
+        }
+     }
     return(
         <ScrollView style={{backgroundColor:'whiteg'}}>
         <View style={styles.container}>
@@ -31,8 +64,8 @@ const FormScreen = () =>{
                 style={styles.input} 
                 placeholder='Enter name' 
                 keyboardType='name-phone-pad' 
-                
                 onChangeText={(newText) => setName(newText)}
+                
                 />
 
             <TextInput 
@@ -77,6 +110,7 @@ const FormScreen = () =>{
             </View>
 
             <DropdownComponent/>
+            
 
             <View style={styles.checkBoxView}>
                 <View style={styles.checkBoxItemView}>
@@ -111,7 +145,7 @@ const FormScreen = () =>{
             </View>
             
             <View style={styles.button}>
-                <Button  title='Submit'  onPress={()=>alert(name+"  "+age)}/>
+                <Button  title='Submit'  onPress={()=>onButtonCLick()}/>
             </View>
         </View>
         </ScrollView>

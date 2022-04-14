@@ -4,7 +4,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 
 
 const data = [
-    { label: 'America', value: 'America1' },
+    { label: 'America', value: 'America' },
     { label: 'Australia', value: 'Australia' },
     { label: 'Egypt', value: 'Egypt' },
     { label: 'Canada', value: 'Canada' },
@@ -15,7 +15,7 @@ const data = [
   ];
 
 const DropdownComponent = () =>{
-    const [value, setValue] = useState(null);
+    const [value, setValue] = useState("");
     const [isFocus, setIsFocus] = useState(false);
 
     return(
