@@ -5,11 +5,14 @@ import Checkbox from 'expo-checkbox';
 import DatePicker from 'react-native-datepicker'
 import DropdownComponent from './components/DropdownComponent';
 
+
 const radioButtonData = [
     { id:1, label:"Male", value:"Male"},
     { id:2, label:"Female", value:"Female"}
 ]
 const FormScreen = () =>{
+    const [name, setName] = useState("")
+    const [age, setAge] = useState("")
     const [radioButton, setRadioButton] = useState(radioButtonData)
     const [englishCheckBox , setEnglish] = useState(false)
     const [gujaratiCheckBox , setGujarati] = useState(false)
@@ -21,12 +24,24 @@ const FormScreen = () =>{
         
     }
     return(
-        <ScrollView>
+        <ScrollView style={{backgroundColor:'whiteg'}}>
         <View style={styles.container}>
-            <TextInput style={styles.input} placeholder='Enter name' />
+            
+            <TextInput 
+                style={styles.input} 
+                placeholder='Enter name' 
+                keyboardType='name-phone-pad' 
+                
+                onChangeText={(newText) => setName(newText)}
+                />
 
-            <TextInput style={styles.input} placeholder='Enter age' />
-
+            <TextInput 
+                style={styles.input} 
+                placeholder='Enter age' 
+                keyboardType='number-pad' 
+                onChangeText={(newAge) => setAge(newAge)}
+                />
+            
             <RadioGroup
                 containerStyle={styles.radioButton}
                 radioButtons={radioButton}
@@ -94,9 +109,9 @@ const FormScreen = () =>{
                     <Text  style={styles.checkBoxLabel}>Hindi</Text>
                 </View>
             </View>
-
+            
             <View style={styles.button}>
-                <Button  title='Submit' onPress={ () => alert("Done")}/>
+                <Button  title='Submit'  onPress={()=>alert(name+"  "+age)}/>
             </View>
         </View>
         </ScrollView>
