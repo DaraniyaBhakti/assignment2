@@ -1,9 +1,10 @@
-import React, {useState, Component} from 'react';
-import { StyleSheet, View, Text, TextInput, Button, ScrollView } from 'react-native';
+import React, {useState,useEffect} from 'react';
+import { StyleSheet, View, Text, TextInput, Button, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import RadioGroup from 'react-native-radio-buttons-group';
 import Checkbox from 'expo-checkbox';
 import DatePicker from 'react-native-datepicker'
 import DropdownComponent from './components/DropdownComponent';
+
 
 
 const radioButtonData = [
@@ -12,21 +13,39 @@ const radioButtonData = [
 ]
 
 const FormScreen = () =>{
-    
+     
+    const [modalVisibility, setModalVisibility] = useState(false)
     const [name, setName] = useState("")
     const [age, setAge] = useState("")
-    const [radioButton, setRadioButton] = useState(radioButtonData)
+    const [radioButton, setRadioButton] = useState(radioButton)
     const [englishCheckBox , setEnglish] = useState(false)
     const [gujaratiCheckBox , setGujarati] = useState(false)
+    const [selectRadio, setSelectRadio] = useState()
     const [hindiCheckBox , setHindi] = useState(false)
     const [birthDate, setBirthDate] = useState("")
+    const [country, setCountry] = useState("");
 
-    function onPressRadioButton(radioButtonArray){
-        setRadioButton(radioButtonArray);
+    
+    function modal(){
         
+        setTimeout(() => {
+            // After 5 seconds set the show value to false
+            setModalVisibility(false)
+            alert("Success");
+        }, 5000)
+    
     }
+    function onPressRadioButton(radioBtnArray){
+        setRadioButton(radioBtnArray);
+    }
+    useEffect(()=>{
+         setSelectRadio(!!radioButton ? radioButton.find(a=> a.selected).label:null)
+    },[radioButton])
+
     function onButtonCLick(){
+        
         let isValid = true;
+        !!selectRadio ? null : isValid=false
         if(!name.trim()){
             alert("Enter name")
             isValid = false;
@@ -43,29 +62,40 @@ const FormScreen = () =>{
             isValid = false;
             return;
         }
-        if(!englishCheckBox){
-            if(!hindiCheckBox){
-                if(!gujaratiCheckBox){
-                    alert("Select language")
-                    isValid = false;
-                    return;
-                }
-            }
+       
+        if(!(englishCheckBox || hindiCheckBox ||gujaratiCheckBox)){
+            alert("Select language")
+            isValid = false;
+            return;
+        }
+        if(!country.trim()){
+            alert("Select country")
+            isValid = false;
+            return;
         }
         if(isValid){
-            alert("Succes");
+            
+            setModalVisibility(true)
+            modal()
         }
      }
-    return(
-        <ScrollView style={{backgroundColor:'whiteg'}}>
-        <View style={styles.container}>
-            
+    return(<>
+        <Modal style={{flex:1, height:'100%', width:'100%', justifyContent:'center', alignItems:"center"}} animationType = {"fade"} transparent = {true}
+               visible = {modalVisibility}
+               onRequestClose = {() => { console.log("Modal has been closed.") } }>
+               
+               <View style = {{height:'100%', justifyContent:'center'}}>
+               <ActivityIndicator size="large" color="#0000ff"  />
+                  
+               </View>
+            </Modal>
+        <ScrollView style={{backgroundColor:'white'}}>
+        <View style={styles.container}>      
             <TextInput 
                 style={styles.input} 
                 placeholder='Enter name' 
                 keyboardType='name-phone-pad' 
                 onChangeText={(newText) => setName(newText)}
-                
                 />
 
             <TextInput 
@@ -73,15 +103,15 @@ const FormScreen = () =>{
                 placeholder='Enter age' 
                 keyboardType='number-pad' 
                 onChangeText={(newAge) => setAge(newAge)}
-                />
+                error={""}/>
             
             <RadioGroup
                 containerStyle={styles.radioButton}
-                radioButtons={radioButton}
+                radioButtons={radioButtonData}
                 onPress={onPressRadioButton}
                 layout='row'
             />
-
+          
             <View style={styles.datePicker}>
                 <DatePicker 
                     style={{width:'100%'}}
@@ -109,7 +139,7 @@ const FormScreen = () =>{
                 />
             </View>
 
-            <DropdownComponent/>
+            <DropdownComponent country={country} setCountry={setCountry}/>
             
 
             <View style={styles.checkBoxView}>
@@ -143,13 +173,15 @@ const FormScreen = () =>{
                     <Text  style={styles.checkBoxLabel}>Hindi</Text>
                 </View>
             </View>
+
             
             <View style={styles.button}>
                 <Button  title='Submit'  onPress={()=>onButtonCLick()}/>
             </View>
+            
         </View>
         </ScrollView>
-    )
+   </> )
 }
 
 const styles = StyleSheet.create({
@@ -192,6 +224,14 @@ const styles = StyleSheet.create({
     button:{
         margin:15,
         padding:10
+    },
+    spinner:{
+        // backgroundColor:'red',
+        // width:'100%',
+        // height:'100%',
+        // flex:0.2,
+        justifyContent:'center',
+        alignItems:'center'
     }
 });
 

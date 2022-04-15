@@ -14,8 +14,8 @@ const data = [
     { label: 'Spain', value: 'Spain' },
   ];
 
-const DropdownComponent = () =>{
-    const [value, setValue] = useState("");
+const DropdownComponent = (props) =>{
+    // const [value, setValue] = useState("");
     const [isFocus, setIsFocus] = useState(false);
 
     return(
@@ -33,11 +33,11 @@ const DropdownComponent = () =>{
                 valueField="value"
                 placeholder={!isFocus ? 'Select country' : '...'}
                 searchPlaceholder="Search..."
-                value={value}
+                value={props.country}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
                 onChange={item => {
-                    setValue(item.value);
+                    props.setCountry(item.value);
                     setIsFocus(false);
                 }}
             />
